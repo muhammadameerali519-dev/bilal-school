@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Gem } from 'lucide-react';
+import { resolveLuxuryAssetUrl } from '../data/catalogDefaults';
 
 export const BrandEmblem: React.FC<{ className?: string }> = ({ className = 'w-6 h-6' }) => (
   <svg
@@ -53,8 +54,9 @@ export const LuxuryImage: React.FC<{
   fallbackTitle?: string;
 }> = ({ src, alt, className = '', fallbackTitle }) => {
   const [failed, setFailed] = useState(false);
+  const resolvedSrc = resolveLuxuryAssetUrl(src);
 
-  if (!src || failed) {
+  if (!resolvedSrc || failed) {
     return (
       <div
         className={`flex flex-col items-center justify-center bg-gradient-to-br from-[#FFE0EB] via-[#FFF5F8] to-[#F7A8C4]/40 text-[#B5123B] p-6 text-center ${className}`}
@@ -73,12 +75,13 @@ export const LuxuryImage: React.FC<{
 
   return (
     <img
-      src={src}
+      src={resolvedSrc}
       alt={alt}
       referrerPolicy="no-referrer"
       onError={() => setFailed(true)}
       className={className}
       loading="lazy"
+      decoding="async"
     />
   );
 };

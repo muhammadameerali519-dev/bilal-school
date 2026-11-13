@@ -19,6 +19,7 @@
     font-family: var(--font-sans);
     color: #230B14;
     background-color: #FFF5F8;
+    overflow-x: clip;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
@@ -26,7 +27,7 @@
   body {
     margin: 0;
     min-height: 100vh;
-    overflow-x: hidden;
+    overflow-x: clip;
     background:
       radial-gradient(circle at 12% 10%, rgba(247, 168, 196, 0.42) 0%, transparent 46%),
       radial-gradient(circle at 88% 18%, rgba(255, 224, 235, 0.9) 0%, transparent 44%),
@@ -34,6 +35,13 @@
       radial-gradient(circle at 85% 88%, rgba(247, 168, 196, 0.34) 0%, transparent 45%),
       #FFF5F8;
     background-attachment: fixed;
+  }
+
+  @media (max-width: 768px) {
+    body {
+      /* Avoid fixed background repaint lag on mobile browsers */
+      background-attachment: scroll;
+    }
   }
 
   h1, h2, h3, h4, .font-editorial {
@@ -44,9 +52,9 @@
 
 /* Extreme Glassmorphism & Squircle Surface System */
 .glass-panel {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.62) 0%, rgba(255, 224, 235, 0.36) 100%);
-  backdrop-filter: blur(22px) saturate(165%);
-  -webkit-backdrop-filter: blur(22px) saturate(165%);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.66) 0%, rgba(255, 224, 235, 0.38) 100%);
+  backdrop-filter: blur(20px) saturate(160%);
+  -webkit-backdrop-filter: blur(20px) saturate(160%);
   border: 1px solid rgba(255, 255, 255, 0.78);
   box-shadow:
     inset 0 1px 1px rgba(255, 255, 255, 0.9),
@@ -54,9 +62,9 @@
 }
 
 .glass-panel-strong {
-  background: linear-gradient(140deg, rgba(255, 255, 255, 0.8) 0%, rgba(255, 224, 235, 0.54) 100%);
-  backdrop-filter: blur(28px) saturate(180%);
-  -webkit-backdrop-filter: blur(28px) saturate(180%);
+  background: linear-gradient(140deg, rgba(255, 255, 255, 0.82) 0%, rgba(255, 224, 235, 0.56) 100%);
+  backdrop-filter: blur(24px) saturate(175%);
+  -webkit-backdrop-filter: blur(24px) saturate(175%);
   border: 1px solid rgba(255, 255, 255, 0.88);
   box-shadow:
     inset 0 1.5px 1px rgba(255, 255, 255, 0.95),
@@ -64,19 +72,35 @@
 }
 
 .glass-pink {
-  background: linear-gradient(145deg, rgba(255, 224, 235, 0.56) 0%, rgba(247, 168, 196, 0.28) 100%);
-  backdrop-filter: blur(20px) saturate(160%);
-  -webkit-backdrop-filter: blur(20px) saturate(160%);
-  border: 1px solid rgba(255, 255, 255, 0.72);
+  background: linear-gradient(145deg, rgba(255, 224, 235, 0.58) 0%, rgba(247, 168, 196, 0.3) 100%);
+  backdrop-filter: blur(18px) saturate(155%);
+  -webkit-backdrop-filter: blur(18px) saturate(155%);
+  border: 1px solid rgba(255, 255, 255, 0.74);
   box-shadow:
     inset 0 1px 1px rgba(255, 255, 255, 0.82),
     0 14px 36px -12px rgba(181, 18, 59, 0.14);
 }
 
+@media (max-width: 640px) {
+  /* Lighter GPU blur radius on smartphones for smooth 60fps scrolling */
+  .glass-panel {
+    backdrop-filter: blur(12px) saturate(145%);
+    -webkit-backdrop-filter: blur(12px) saturate(145%);
+  }
+  .glass-panel-strong {
+    backdrop-filter: blur(15px) saturate(155%);
+    -webkit-backdrop-filter: blur(15px) saturate(155%);
+  }
+  .glass-pink {
+    backdrop-filter: blur(12px) saturate(145%);
+    -webkit-backdrop-filter: blur(12px) saturate(145%);
+  }
+}
+
 .glass-squircle-icon {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.75) 0%, rgba(255, 224, 235, 0.45) 100%);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.78) 0%, rgba(255, 224, 235, 0.48) 100%);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
   border: 1px solid rgba(255, 255, 255, 0.85);
   border-radius: 14px;
   box-shadow:
@@ -124,8 +148,10 @@
   pointer-events: none;
 }
 
-.glass-shimmer:hover::after {
-  animation: shimmerSweep 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+@media (hover: hover) {
+  .glass-shimmer:hover::after {
+    animation: shimmerSweep 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

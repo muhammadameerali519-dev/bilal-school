@@ -1,15 +1,39 @@
 import { CategoryName, GalleryItem, Product, StoreSettings } from '../types';
+import heroImg from '../assets/images/hero_luxury_jewellery_1794599313071.jpg';
+import necklacesImg from '../assets/images/cat_necklaces_pearls_1794599313662.jpg';
+import earringsImg from '../assets/images/cat_earrings_crystals_1794599314711.jpg';
+import banglesImg from '../assets/images/cat_bangles_bracelets_1794599314141.jpg';
+import ringsImg from '../assets/images/cat_rings_statement_1794599313874.jpg';
+import bridalImg from '../assets/images/cat_bridal_sets_1794599315202.jpg';
+import accessoriesImg from '../assets/images/cat_accessories_hair_1794599315983.jpg';
+import atelierImg from '../assets/images/brand_atelier_story_1794599315481.jpg';
 
 export const BRAND_IMAGES = {
-  hero: '/src/assets/images/hero_luxury_jewellery_1794599313071.jpg',
-  necklaces: '/src/assets/images/cat_necklaces_pearls_1794599313662.jpg',
-  earrings: '/src/assets/images/cat_earrings_crystals_1794599314711.jpg',
-  bangles: '/src/assets/images/cat_bangles_bracelets_1794599314141.jpg',
-  rings: '/src/assets/images/cat_rings_statement_1794599313874.jpg',
-  bridal: '/src/assets/images/cat_bridal_sets_1794599315202.jpg',
-  accessories: '/src/assets/images/cat_accessories_hair_1794599315983.jpg',
-  atelier: '/src/assets/images/brand_atelier_story_1794599315481.jpg',
+  hero: heroImg,
+  necklaces: necklacesImg,
+  earrings: earringsImg,
+  bangles: banglesImg,
+  rings: ringsImg,
+  bridal: bridalImg,
+  accessories: accessoriesImg,
+  atelier: atelierImg,
 };
+
+const LEGACY_ASSET_MAP: Record<string, string> = {
+  '/src/assets/images/hero_luxury_jewellery_1794599313071.jpg': heroImg,
+  '/src/assets/images/cat_necklaces_pearls_1794599313662.jpg': necklacesImg,
+  '/src/assets/images/cat_earrings_crystals_1794599314711.jpg': earringsImg,
+  '/src/assets/images/cat_bangles_bracelets_1794599314141.jpg': banglesImg,
+  '/src/assets/images/cat_rings_statement_1794599313874.jpg': ringsImg,
+  '/src/assets/images/cat_bridal_sets_1794599315202.jpg': bridalImg,
+  '/src/assets/images/cat_accessories_hair_1794599315983.jpg': accessoriesImg,
+  '/src/assets/images/brand_atelier_story_1794599315481.jpg': atelierImg,
+};
+
+export function resolveLuxuryAssetUrl(src?: string): string | undefined {
+  if (!src) return src;
+  return LEGACY_ASSET_MAP[src] || src;
+}
 
 export interface CategoryMeta {
   name: CategoryName;

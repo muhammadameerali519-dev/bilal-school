@@ -91,20 +91,20 @@ export const CustomStudioPage: React.FC = () => {
   };
 
   return (
-    <div className="px-4 sm:px-6 pt-4 pb-16">
-      <div className="max-w-[1320px] mx-auto space-y-8">
+    <div className="px-2.5 min-[375px]:px-3.5 sm:px-6 pt-3 sm:pt-4 pb-16">
+      <div className="max-w-[1320px] mx-auto space-y-6 sm:space-y-8">
         {/* Header */}
-        <div className="glass-pink rounded-[34px] p-7 sm:p-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+        <div className="glass-pink rounded-[26px] sm:rounded-[34px] p-5 sm:p-10 grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 items-center">
           <div className="lg:col-span-7">
-            <div className="flex items-center gap-3 mb-4">
-              <SquircleIcon variant="crimson" className="w-11 h-11">
+            <div className="flex items-center gap-3 mb-3 sm:mb-4">
+              <SquircleIcon variant="crimson" className="w-10 h-10 sm:w-11 sm:h-11">
                 <Palette className="w-5 h-5" />
               </SquircleIcon>
-              <span className="text-xs uppercase tracking-[0.22em] text-[#B5123B] font-semibold">
+              <span className="text-[11px] sm:text-xs uppercase tracking-[0.2em] text-[#B5123B] font-semibold">
                 Custom Atelier
               </span>
             </div>
-            <h1 className="font-serif text-4xl sm:text-5xl font-semibold text-[#230B14] leading-tight mb-4">
+            <h1 className="font-serif text-3xl sm:text-5xl font-semibold text-[#230B14] leading-tight mb-3 sm:mb-4">
               YOUR STYLE. YOUR CREATION.
             </h1>
             <p className="text-sm sm:text-base text-[#6E3F50] leading-relaxed max-w-2xl">
@@ -113,7 +113,7 @@ export const CustomStudioPage: React.FC = () => {
           </div>
 
           <div className="lg:col-span-5">
-            <div className="aspect-[4/3] rounded-[24px] overflow-hidden border border-white/80 shadow-lg">
+            <div className="aspect-[4/3] rounded-[20px] sm:rounded-[24px] overflow-hidden border border-white/80 shadow-lg">
               <LuxuryImage
                 src={BRAND_IMAGES.atelier}
                 alt="Custom jewellery sketch and loose pearls"
@@ -125,7 +125,7 @@ export const CustomStudioPage: React.FC = () => {
 
         {/* Form or Submitted Summary */}
         {submittedRequest ? (
-          <div className="glass-panel-strong rounded-[32px] p-8 sm:p-10 max-w-2xl mx-auto text-center space-y-5">
+          <div className="glass-panel-strong rounded-[26px] sm:rounded-[32px] p-6 sm:p-10 max-w-2xl mx-auto text-center space-y-5">
             <SquircleIcon variant="crimson" className="w-14 h-14 mx-auto">
               <CheckCircle2 className="w-7 h-7" />
             </SquircleIcon>
@@ -139,13 +139,13 @@ export const CustomStudioPage: React.FC = () => {
               Status: <strong className="text-[#B5123B]">{submittedRequest.status}</strong>. Send your request summary directly to our WhatsApp studio to receive design confirmation and pricing.
             </p>
 
-            <div className="rounded-[20px] bg-white/60 border border-white p-4 text-left text-xs space-y-1.5">
+            <div className="rounded-[18px] sm:rounded-[20px] bg-white/65 border border-white p-4 text-left text-xs space-y-1.5">
               <p><strong>Item:</strong> {submittedRequest.itemName} ({submittedRequest.jewelleryType})</p>
               <p><strong>Colour &amp; Material:</strong> {submittedRequest.preferredColor} · {submittedRequest.preferredMaterial}</p>
               <p><strong>Budget:</strong> {submittedRequest.budgetRange}</p>
             </div>
 
-            <div className="flex flex-wrap justify-center gap-3 pt-2">
+            <div className="flex flex-col sm:flex-row flex-wrap justify-center gap-3 pt-2">
               <button
                 type="button"
                 onClick={() =>
@@ -154,16 +154,16 @@ export const CustomStudioPage: React.FC = () => {
                     buildCustomRequestWhatsAppMessage(submittedRequest)
                   )
                 }
-                className="glass-crimson-btn px-6 py-3.5 rounded-[16px] text-white text-xs sm:text-sm font-semibold inline-flex items-center gap-2 cursor-pointer"
+                className="glass-crimson-btn min-h-[48px] px-6 py-3.5 rounded-[16px] text-white text-xs sm:text-sm font-semibold inline-flex items-center justify-center gap-2 cursor-pointer"
               >
-                <MessageCircle className="w-4 h-4" />
+                <MessageCircle className="w-4 h-4 shrink-0" />
                 <span>Share Request on WhatsApp</span>
               </button>
 
               <button
                 type="button"
                 onClick={() => setSubmittedRequest(null)}
-                className="glass-squircle-icon px-6 py-3.5 text-xs sm:text-sm font-semibold text-[#230B14] cursor-pointer"
+                className="glass-squircle-icon min-h-[48px] px-6 py-3.5 text-xs sm:text-sm font-semibold text-[#230B14] cursor-pointer"
               >
                 Submit Another Request
               </button>
@@ -172,11 +172,11 @@ export const CustomStudioPage: React.FC = () => {
         ) : (
           <form
             onSubmit={handleSubmit}
-            className="glass-panel-strong rounded-[32px] p-6 sm:p-10 space-y-6"
+            className="glass-panel-strong rounded-[26px] sm:rounded-[32px] p-4 min-[375px]:p-5 sm:p-10 space-y-5 sm:space-y-6"
           >
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5">
               <div>
-                <label className="block text-xs font-semibold uppercase tracking-[0.12em] text-[#230B14] mb-2">
+                <label className="block text-xs font-semibold uppercase tracking-[0.1em] text-[#230B14] mb-1.5">
                   Customer Name *
                 </label>
                 <input
@@ -185,12 +185,12 @@ export const CustomStudioPage: React.FC = () => {
                   value={customerName}
                   onChange={(e) => setCustomerName(e.target.value)}
                   placeholder="Your full name"
-                  className="w-full px-4 py-3 rounded-[14px] bg-white/75 border border-white text-sm text-[#230B14] focus:outline-none focus:ring-2 focus:ring-[#B5123B]/40"
+                  className="w-full min-h-[46px] px-4 py-3 rounded-[14px] bg-white/80 border border-white text-[16px] sm:text-sm text-[#230B14] focus:outline-none focus:ring-2 focus:ring-[#B5123B]/40"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-semibold uppercase tracking-[0.12em] text-[#230B14] mb-2">
+                <label className="block text-xs font-semibold uppercase tracking-[0.1em] text-[#230B14] mb-1.5">
                   WhatsApp Number *
                 </label>
                 <input
@@ -199,12 +199,12 @@ export const CustomStudioPage: React.FC = () => {
                   value={whatsappNumber}
                   onChange={(e) => setWhatsappNumber(e.target.value)}
                   placeholder="e.g. +92 300 1234567"
-                  className="w-full px-4 py-3 rounded-[14px] bg-white/75 border border-white text-sm text-[#230B14] focus:outline-none focus:ring-2 focus:ring-[#B5123B]/40"
+                  className="w-full min-h-[46px] px-4 py-3 rounded-[14px] bg-white/80 border border-white text-[16px] sm:text-sm text-[#230B14] focus:outline-none focus:ring-2 focus:ring-[#B5123B]/40"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-semibold uppercase tracking-[0.12em] text-[#230B14] mb-2">
+                <label className="block text-xs font-semibold uppercase tracking-[0.1em] text-[#230B14] mb-1.5">
                   Custom Item Name *
                 </label>
                 <input
@@ -213,18 +213,18 @@ export const CustomStudioPage: React.FC = () => {
                   value={itemName}
                   onChange={(e) => setItemName(e.target.value)}
                   placeholder="e.g. Rose-Pink Pearl Bridal Choker"
-                  className="w-full px-4 py-3 rounded-[14px] bg-white/75 border border-white text-sm text-[#230B14] focus:outline-none focus:ring-2 focus:ring-[#B5123B]/40"
+                  className="w-full min-h-[46px] px-4 py-3 rounded-[14px] bg-white/80 border border-white text-[16px] sm:text-sm text-[#230B14] focus:outline-none focus:ring-2 focus:ring-[#B5123B]/40"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-semibold uppercase tracking-[0.12em] text-[#230B14] mb-2">
+                <label className="block text-xs font-semibold uppercase tracking-[0.1em] text-[#230B14] mb-1.5">
                   Jewellery / Accessory Type *
                 </label>
                 <select
                   value={jewelleryType}
                   onChange={(e) => setJewelleryType(e.target.value)}
-                  className="w-full px-4 py-3 rounded-[14px] bg-white/75 border border-white text-sm text-[#230B14] focus:outline-none focus:ring-2 focus:ring-[#B5123B]/40"
+                  className="w-full min-h-[46px] px-4 py-3 rounded-[14px] bg-white/80 border border-white text-[16px] sm:text-sm text-[#230B14] focus:outline-none focus:ring-2 focus:ring-[#B5123B]/40"
                 >
                   <option>Necklace / Choker</option>
                   <option>Earrings / Jhumkas</option>
@@ -237,7 +237,7 @@ export const CustomStudioPage: React.FC = () => {
               </div>
 
               <div>
-                <label className="block text-xs font-semibold uppercase tracking-[0.12em] text-[#230B14] mb-2">
+                <label className="block text-xs font-semibold uppercase tracking-[0.1em] text-[#230B14] mb-1.5">
                   Preferred Colour *
                 </label>
                 <input
@@ -246,12 +246,12 @@ export const CustomStudioPage: React.FC = () => {
                   value={preferredColor}
                   onChange={(e) => setPreferredColor(e.target.value)}
                   placeholder="e.g. Baby Pink, Cherry Red, Champagne Gold"
-                  className="w-full px-4 py-3 rounded-[14px] bg-white/75 border border-white text-sm text-[#230B14] focus:outline-none focus:ring-2 focus:ring-[#B5123B]/40"
+                  className="w-full min-h-[46px] px-4 py-3 rounded-[14px] bg-white/80 border border-white text-[16px] sm:text-sm text-[#230B14] focus:outline-none focus:ring-2 focus:ring-[#B5123B]/40"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-semibold uppercase tracking-[0.12em] text-[#230B14] mb-2">
+                <label className="block text-xs font-semibold uppercase tracking-[0.1em] text-[#230B14] mb-1.5">
                   Preferred Material *
                 </label>
                 <input
@@ -260,18 +260,18 @@ export const CustomStudioPage: React.FC = () => {
                   value={preferredMaterial}
                   onChange={(e) => setPreferredMaterial(e.target.value)}
                   placeholder="e.g. Cubic Zirconia, Faux Pearls, Kundan, Satin"
-                  className="w-full px-4 py-3 rounded-[14px] bg-white/75 border border-white text-sm text-[#230B14] focus:outline-none focus:ring-2 focus:ring-[#B5123B]/40"
+                  className="w-full min-h-[46px] px-4 py-3 rounded-[14px] bg-white/80 border border-white text-[16px] sm:text-sm text-[#230B14] focus:outline-none focus:ring-2 focus:ring-[#B5123B]/40"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-semibold uppercase tracking-[0.12em] text-[#230B14] mb-2">
+                <label className="block text-xs font-semibold uppercase tracking-[0.1em] text-[#230B14] mb-1.5">
                   Budget Range *
                 </label>
                 <select
                   value={budgetRange}
                   onChange={(e) => setBudgetRange(e.target.value)}
-                  className="w-full px-4 py-3 rounded-[14px] bg-white/75 border border-white text-sm text-[#230B14] focus:outline-none focus:ring-2 focus:ring-[#B5123B]/40"
+                  className="w-full min-h-[46px] px-4 py-3 rounded-[14px] bg-white/80 border border-white text-[16px] sm:text-sm text-[#230B14] focus:outline-none focus:ring-2 focus:ring-[#B5123B]/40"
                 >
                   <option>PKR 2,500 – 5,000</option>
                   <option>PKR 5,000 – 12,000</option>
@@ -281,14 +281,14 @@ export const CustomStudioPage: React.FC = () => {
               </div>
 
               <div>
-                <label className="block text-xs font-semibold uppercase tracking-[0.12em] text-[#230B14] mb-2">
+                <label className="block text-xs font-semibold uppercase tracking-[0.1em] text-[#230B14] mb-1.5">
                   Upload Reference Image (Optional)
                 </label>
-                <label className="flex items-center justify-between gap-3 px-4 py-2.5 rounded-[14px] bg-white/75 border border-dashed border-[#B5123B]/50 cursor-pointer hover:bg-white transition-colors">
-                  <span className="text-xs text-[#6E3F50] truncate">
-                    {referenceImageUrl ? 'Reference image attached' : 'Choose inspiration or outfit photo'}
+                <label className="min-h-[46px] flex items-center justify-between gap-2 px-3.5 py-2 rounded-[14px] bg-white/80 border border-dashed border-[#B5123B]/50 cursor-pointer hover:bg-white transition-colors">
+                  <span className="text-xs text-[#6E3F50] truncate min-w-0">
+                    {referenceImageUrl ? 'Reference image attached' : 'Tap to choose inspiration photo'}
                   </span>
-                  <span className="glass-squircle-icon px-3 py-1.5 text-xs font-semibold text-[#B5123B] inline-flex items-center gap-1.5">
+                  <span className="glass-squircle-icon px-3 py-1.5 text-xs font-semibold text-[#B5123B] inline-flex items-center gap-1.5 shrink-0">
                     <Upload className="w-3.5 h-3.5" />
                     <span>Upload</span>
                   </span>
@@ -303,18 +303,18 @@ export const CustomStudioPage: React.FC = () => {
             </div>
 
             {referenceImageUrl && (
-              <div className="flex items-center gap-4 p-3 rounded-[16px] bg-white/60 border border-white">
+              <div className="flex items-center gap-4 p-3 rounded-[16px] bg-white/65 border border-white">
                 <img
                   src={referenceImageUrl}
                   alt="Uploaded reference preview"
-                  className="w-20 h-20 rounded-[12px] object-cover"
+                  className="w-20 h-20 rounded-[12px] object-cover shrink-0"
                 />
                 <div className="text-xs text-[#6E3F50]">
                   <p className="font-semibold text-[#230B14]">Reference Preview Ready</p>
                   <button
                     type="button"
                     onClick={() => setReferenceImageUrl('')}
-                    className="text-[#B5123B] underline mt-1 cursor-pointer"
+                    className="text-[#B5123B] underline mt-1.5 py-1 cursor-pointer"
                   >
                     Remove Image
                   </button>
@@ -323,7 +323,7 @@ export const CustomStudioPage: React.FC = () => {
             )}
 
             <div>
-              <label className="block text-xs font-semibold uppercase tracking-[0.12em] text-[#230B14] mb-2">
+              <label className="block text-xs font-semibold uppercase tracking-[0.1em] text-[#230B14] mb-1.5">
                 Design Description &amp; Sizing Notes *
               </label>
               <textarea
@@ -332,20 +332,20 @@ export const CustomStudioPage: React.FC = () => {
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 placeholder="Describe necklace length, bangle size, stone tones, or occasion date..."
-                className="w-full px-4 py-3 rounded-[16px] bg-white/75 border border-white text-sm text-[#230B14] focus:outline-none focus:ring-2 focus:ring-[#B5123B]/40"
+                className="w-full px-4 py-3 rounded-[16px] bg-white/80 border border-white text-[16px] sm:text-sm text-[#230B14] focus:outline-none focus:ring-2 focus:ring-[#B5123B]/40"
               />
             </div>
 
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-2">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-1">
               <p className="text-xs text-[#6E3F50]">
                 Requests are stored securely and prepared for WhatsApp studio review.
               </p>
               <button
                 type="submit"
                 disabled={submitting}
-                className="glass-shimmer glass-crimson-btn px-8 py-4 rounded-[18px] text-white text-xs sm:text-sm font-semibold inline-flex items-center justify-center gap-2.5 cursor-pointer disabled:opacity-60"
+                className="glass-shimmer glass-crimson-btn w-full sm:w-auto min-h-[50px] px-8 py-4 rounded-[16px] sm:rounded-[18px] text-white text-xs sm:text-sm font-semibold inline-flex items-center justify-center gap-2.5 cursor-pointer disabled:opacity-60"
               >
-                <Sparkles className="w-4 h-4" />
+                <Sparkles className="w-4 h-4 shrink-0" />
                 <span>{submitting ? 'Submitting Request...' : 'SUBMIT CUSTOM REQUEST'}</span>
               </button>
             </div>

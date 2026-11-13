@@ -3,11 +3,11 @@ import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
 import {
   ChevronDown,
   Heart,
-  Menu,
+  Palette,
   Search,
   ShoppingBag,
+  Sparkles,
   User,
-  X,
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useStore } from '../context/StoreContext';
@@ -43,23 +43,27 @@ export const Navbar: React.FC = () => {
   };
 
   return (
-    <header className="sticky top-0 z-50 px-3 sm:px-6 pt-3 pb-2 pointer-events-none no-print">
+    <header className="sticky top-0 z-50 px-2 min-[360px]:px-3 sm:px-6 pt-2 sm:pt-3 pb-1.5 sm:pb-2 pointer-events-none no-print">
       <div className="max-w-[1320px] mx-auto pointer-events-auto">
-        <div className="glass-panel rounded-[22px] px-4 sm:px-6 h-16 flex items-center justify-between gap-4 sm:gap-8 relative">
+        <div className="glass-panel rounded-[18px] sm:rounded-[22px] px-2.5 min-[360px]:px-3.5 sm:px-6 h-14 sm:h-16 flex items-center justify-between gap-1.5 sm:gap-8 relative">
           {/* Zone 1: Brand Title */}
           <Link
             to="/"
-            className="flex items-center gap-3 whitespace-nowrap shrink-0 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B5123B] rounded-[14px]"
+            onClick={() => setMobileOpen(false)}
+            className="flex items-center gap-1.5 min-[360px]:gap-2 sm:gap-3 whitespace-nowrap shrink-0 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B5123B] rounded-[14px]"
           >
-            <SquircleIcon variant="crimson" className="w-10 h-10">
-              <BrandEmblem className="w-5 h-5" />
+            <SquircleIcon
+              variant="crimson"
+              className="w-7 h-7 min-[360px]:w-8 min-[360px]:h-8 sm:w-10 sm:h-10 rounded-[10px] sm:rounded-[14px]"
+            >
+              <BrandEmblem className="w-3.5 h-3.5 min-[360px]:w-4 min-[360px]:h-4 sm:w-5 sm:h-5" />
             </SquircleIcon>
-            <span className="font-serif text-lg sm:text-xl font-bold tracking-[0.14em] text-[#230B14] group-hover:text-[#B5123B] transition-colors whitespace-nowrap">
+            <span className="font-serif text-[13px] min-[360px]:text-[15px] min-[414px]:text-lg sm:text-xl font-bold tracking-[0.04em] min-[360px]:tracking-[0.08em] sm:tracking-[0.14em] text-[#230B14] group-hover:text-[#B5123B] transition-colors whitespace-nowrap">
               BILAL SHEIKH
             </span>
           </Link>
 
-          {/* Zone 2: Clean Single-Line Nav Links */}
+          {/* Zone 2: Clean Single-Line Nav Links (Desktop) */}
           <nav
             className="hidden lg:flex items-center gap-6 text-[13px] font-medium text-[#230B14]"
             aria-label="Primary Navigation"
@@ -162,24 +166,28 @@ export const Navbar: React.FC = () => {
           </nav>
 
           {/* Zone 3: Squircle Glass Action Controls */}
-          <div className="flex items-center gap-2 sm:gap-2.5 shrink-0">
+          <div className="flex items-center gap-1 min-[360px]:gap-1.5 sm:gap-2.5 shrink-0">
             <button
               type="button"
-              onClick={() => setIsSearchOpen(true)}
+              onClick={() => {
+                setMobileOpen(false);
+                setIsSearchOpen(true);
+              }}
               aria-label="Search Products"
-              className="glass-squircle-icon w-10 h-10 flex items-center justify-center text-[#230B14] hover:text-[#B5123B] hover:-translate-y-0.5 transition-all cursor-pointer"
+              className="glass-squircle-icon w-8 h-8 min-[360px]:w-9 min-[360px]:h-9 sm:w-10 sm:h-10 rounded-[11px] sm:rounded-[14px] flex items-center justify-center text-[#230B14] hover:text-[#B5123B] transition-all cursor-pointer"
             >
-              <Search className="w-4 h-4" />
+              <Search className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
             </button>
 
             <Link
               to="/account"
+              onClick={() => setMobileOpen(false)}
               aria-label="Wishlist"
-              className="relative glass-squircle-icon w-10 h-10 flex items-center justify-center text-[#230B14] hover:text-[#B5123B] hover:-translate-y-0.5 transition-all"
+              className="relative glass-squircle-icon w-8 h-8 min-[360px]:w-9 min-[360px]:h-9 sm:w-10 sm:h-10 rounded-[11px] sm:rounded-[14px] flex items-center justify-center text-[#230B14] hover:text-[#B5123B] transition-all"
             >
-              <Heart className="w-4 h-4" />
+              <Heart className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
               {wishlistIds.length > 0 && (
-                <span className="absolute -top-1 -right-1 min-w-[18px] h-[18px] px-1 rounded-[7px] bg-[#E32652] text-white text-[10px] font-bold flex items-center justify-center tabular-nums">
+                <span className="absolute -top-1 -right-1 min-w-[15px] h-[15px] px-1 rounded-[5px] bg-[#E32652] text-white text-[9px] font-bold flex items-center justify-center tabular-nums">
                   {wishlistIds.length}
                 </span>
               )}
@@ -187,18 +195,21 @@ export const Navbar: React.FC = () => {
 
             <button
               type="button"
-              onClick={() => setIsCartOpen(true)}
+              onClick={() => {
+                setMobileOpen(false);
+                setIsCartOpen(true);
+              }}
               aria-label="Open Shopping Bag"
-              className="relative glass-squircle-icon w-10 h-10 flex items-center justify-center text-[#230B14] hover:text-[#B5123B] hover:-translate-y-0.5 transition-all cursor-pointer"
+              className="relative glass-squircle-icon w-8 h-8 min-[360px]:w-9 min-[360px]:h-9 sm:w-10 sm:h-10 rounded-[11px] sm:rounded-[14px] flex items-center justify-center text-[#230B14] hover:text-[#B5123B] transition-all cursor-pointer"
             >
-              <ShoppingBag className="w-4 h-4" />
+              <ShoppingBag className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
               <AnimatePresence>
                 {cartCount > 0 && (
                   <motion.span
                     key={cartCount}
                     initial={{ scale: 0.6 }}
                     animate={{ scale: 1 }}
-                    className="absolute -top-1 -right-1 min-w-[18px] h-[18px] px-1 rounded-[7px] bg-[#B5123B] text-white text-[10px] font-bold flex items-center justify-center tabular-nums shadow-sm"
+                    className="absolute -top-1 -right-1 min-w-[15px] h-[15px] px-1 rounded-[5px] bg-[#B5123B] text-white text-[9px] font-bold flex items-center justify-center tabular-nums shadow-sm"
                   >
                     {cartCount}
                   </motion.span>
@@ -209,7 +220,7 @@ export const Navbar: React.FC = () => {
             <Link
               to={isAdmin ? '/admin' : '/account'}
               aria-label={user ? 'Account and Admin' : 'Sign In / Account'}
-              className="hidden sm:flex glass-squircle-icon w-10 h-10 items-center justify-center text-[#230B14] hover:text-[#B5123B] hover:-translate-y-0.5 transition-all overflow-hidden"
+              className="hidden sm:flex glass-squircle-icon w-10 h-10 items-center justify-center text-[#230B14] hover:text-[#B5123B] transition-all overflow-hidden"
             >
               {user?.photoURL ? (
                 <img
@@ -223,26 +234,42 @@ export const Navbar: React.FC = () => {
               )}
             </Link>
 
+            {/* Animated Hamburger Squircle Button */}
             <button
               type="button"
               onClick={() => setMobileOpen((o) => !o)}
-              aria-label="Toggle Mobile Menu"
-              className="lg:hidden glass-squircle-icon w-10 h-10 flex items-center justify-center text-[#230B14] cursor-pointer"
+              aria-label={mobileOpen ? 'Close Menu' : 'Open Menu'}
+              aria-expanded={mobileOpen}
+              className="lg:hidden glass-squircle-icon w-9 h-9 sm:w-10 sm:h-10 rounded-[12px] sm:rounded-[14px] flex flex-col items-center justify-center gap-[4px] text-[#230B14] cursor-pointer"
             >
-              {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+              <motion.span
+                animate={mobileOpen ? { rotate: 45, y: 5.5 } : { rotate: 0, y: 0 }}
+                transition={{ duration: 0.2 }}
+                className="w-4 h-[1.75px] rounded-full bg-[#230B14] block"
+              />
+              <motion.span
+                animate={mobileOpen ? { opacity: 0, scaleX: 0 } : { opacity: 1, scaleX: 1 }}
+                transition={{ duration: 0.16 }}
+                className="w-4 h-[1.75px] rounded-full bg-[#B5123B] block"
+              />
+              <motion.span
+                animate={mobileOpen ? { rotate: -45, y: -5.5 } : { rotate: 0, y: 0 }}
+                transition={{ duration: 0.2 }}
+                className="w-4 h-[1.75px] rounded-full bg-[#230B14] block"
+              />
             </button>
           </div>
         </div>
 
-        {/* Mobile Glass Drawer */}
+        {/* Mobile Glass Drawer — Ergonomic One-Handed Grid */}
         <AnimatePresence>
           {mobileOpen && (
             <motion.div
-              initial={{ opacity: 0, y: -12 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -12 }}
-              transition={{ duration: 0.22 }}
-              className="lg:hidden mt-2 glass-panel-strong rounded-[24px] p-5 space-y-4"
+              initial={{ opacity: 0, y: -10, scale: 0.98 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: -10, scale: 0.98 }}
+              transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
+              className="lg:hidden mt-2 glass-panel-strong rounded-[24px] p-4 max-h-[78vh] overflow-y-auto space-y-3"
             >
               <div className="grid grid-cols-2 gap-2">
                 {navItems.map((item) => (
@@ -250,37 +277,67 @@ export const Navbar: React.FC = () => {
                     key={item.label}
                     to={item.to}
                     onClick={() => setMobileOpen(false)}
-                    className="px-4 py-3 rounded-[14px] bg-white/55 text-sm font-medium text-[#230B14] hover:text-[#B5123B]"
+                    className={`min-h-[44px] px-3.5 py-2.5 rounded-[14px] flex items-center text-sm font-medium transition-colors ${
+                      isRouteActive(item.to)
+                        ? 'bg-[#B5123B] text-white font-semibold'
+                        : 'bg-white/65 text-[#230B14] hover:text-[#B5123B]'
+                    }`}
                   >
                     {item.label}
                   </Link>
                 ))}
+              </div>
+
+              {/* Quick Category Chips */}
+              <div className="pt-2 border-t border-white/65">
+                <p className="text-[10px] uppercase tracking-[0.16em] text-[#6E3F50] font-semibold mb-2 px-1">
+                  Shop Categories
+                </p>
+                <div className="flex flex-wrap gap-1.5">
+                  {LUXURY_CATEGORIES.slice(0, 8).map((cat) => (
+                    <Link
+                      key={cat.slug}
+                      to={`/collections/${cat.slug}`}
+                      onClick={() => setMobileOpen(false)}
+                      className="px-3 py-2 rounded-[12px] bg-white/70 border border-white text-xs font-medium text-[#230B14] active:bg-[#FFE0EB]"
+                    >
+                      {cat.name}
+                    </Link>
+                  ))}
+                </div>
+              </div>
+
+              {/* Thumb-Friendly Primary Mobile Actions */}
+              <div className="pt-2 border-t border-white/65 grid grid-cols-1 min-[360px]:grid-cols-2 gap-2">
                 <Link
                   to="/custom"
                   onClick={() => setMobileOpen(false)}
-                  className="px-4 py-3 rounded-[14px] bg-[#FFE0EB]/75 text-sm font-semibold text-[#B5123B]"
+                  className="min-h-[44px] px-3.5 py-2.5 rounded-[14px] bg-[#FFE0EB]/85 border border-white text-xs font-semibold text-[#B5123B] flex items-center gap-2"
                 >
-                  Custom Studio
+                  <Palette className="w-4 h-4 shrink-0" />
+                  <span>Custom Studio</span>
                 </Link>
                 <Link
                   to="/gallery"
                   onClick={() => setMobileOpen(false)}
-                  className="px-4 py-3 rounded-[14px] bg-white/55 text-sm font-medium text-[#230B14]"
+                  className="min-h-[44px] px-3.5 py-2.5 rounded-[14px] bg-white/70 border border-white text-xs font-semibold text-[#230B14] flex items-center gap-2"
                 >
-                  Gallery
+                  <Sparkles className="w-4 h-4 text-[#B5123B] shrink-0" />
+                  <span>Editorial Gallery</span>
                 </Link>
                 <Link
                   to="/account"
                   onClick={() => setMobileOpen(false)}
-                  className="px-4 py-3 rounded-[14px] bg-white/55 text-sm font-medium text-[#230B14]"
+                  className="min-h-[44px] px-3.5 py-2.5 rounded-[14px] bg-white/70 border border-white text-xs font-semibold text-[#230B14] flex items-center gap-2"
                 >
-                  Account &amp; Wishlist
+                  <User className="w-4 h-4 text-[#B5123B] shrink-0" />
+                  <span>Account &amp; Wishlist</span>
                 </Link>
                 {isAdmin && (
                   <Link
                     to="/admin"
                     onClick={() => setMobileOpen(false)}
-                    className="px-4 py-3 rounded-[14px] glass-crimson-btn text-sm font-semibold text-white"
+                    className="min-h-[44px] px-3.5 py-2.5 rounded-[14px] glass-crimson-btn text-xs font-semibold text-white flex items-center justify-center"
                   >
                     Admin Dashboard
                   </Link>

@@ -9,31 +9,31 @@ export const AboutPage: React.FC = () => {
   const { settings } = useStore();
 
   return (
-    <div className="px-4 sm:px-6 pt-4 pb-16">
-      <div className="max-w-[1320px] mx-auto space-y-10">
+    <div className="px-2.5 min-[375px]:px-3.5 sm:px-6 pt-3 sm:pt-4 pb-16">
+      <div className="max-w-[1320px] mx-auto space-y-6 sm:space-y-10">
         {/* Editorial Hero */}
-        <div className="glass-panel-strong rounded-[34px] p-6 sm:p-10 lg:p-12 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-          <div className="lg:col-span-7 space-y-5">
-            <p className="text-xs uppercase tracking-[0.24em] text-[#B5123B] font-semibold">
+        <div className="glass-panel-strong rounded-[26px] sm:rounded-[34px] p-5 sm:p-10 lg:p-12 grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 items-center">
+          <div className="lg:col-span-7 space-y-4 sm:space-y-5">
+            <p className="text-[11px] sm:text-xs uppercase tracking-[0.22em] text-[#B5123B] font-semibold">
               BILAL SHEIKH Brand Philosophy
             </p>
-            <h1 className="font-serif text-4xl sm:text-5xl lg:text-6xl font-semibold text-[#230B14] leading-[1.05]">
+            <h1 className="font-serif text-3xl min-[375px]:text-4xl sm:text-5xl lg:text-6xl font-semibold text-[#230B14] leading-[1.06]">
               MORE THAN JEWELLERY. IT&apos;S YOUR PERSONAL STATEMENT.
             </h1>
             <p className="text-sm sm:text-base text-[#6E3F50] leading-relaxed whitespace-pre-line">
               {settings.aboutStory}
             </p>
-            <div className="flex flex-wrap gap-3 pt-2">
+            <div className="flex flex-col min-[375px]:flex-row flex-wrap gap-3 pt-2">
               <Link
                 to="/collections"
-                className="glass-crimson-btn px-7 py-3.5 rounded-[16px] text-white text-xs font-semibold inline-flex items-center gap-2"
+                className="glass-crimson-btn min-h-[46px] px-6 sm:px-7 py-3.5 rounded-[16px] text-white text-xs font-semibold inline-flex items-center justify-center gap-2"
               >
                 <span>Explore Collections</span>
                 <ArrowRight className="w-4 h-4" />
               </Link>
               <Link
                 to="/custom"
-                className="glass-squircle-icon px-6 py-3.5 text-xs font-semibold text-[#230B14] hover:text-[#B5123B]"
+                className="glass-squircle-icon min-h-[46px] px-6 py-3.5 text-xs font-semibold text-[#230B14] hover:text-[#B5123B] inline-flex items-center justify-center"
               >
                 Custom Jewellery Studio
               </Link>
@@ -41,7 +41,7 @@ export const AboutPage: React.FC = () => {
           </div>
 
           <div className="lg:col-span-5">
-            <div className="aspect-[3/4] rounded-[26px] overflow-hidden border border-white/80 shadow-xl">
+            <div className="aspect-[4/3] lg:aspect-[3/4] rounded-[22px] sm:rounded-[26px] overflow-hidden border border-white/80 shadow-xl">
               <LuxuryImage
                 src={BRAND_IMAGES.atelier}
                 alt="BILAL SHEIKH jewellery design table"
@@ -52,7 +52,7 @@ export const AboutPage: React.FC = () => {
         </div>
 
         {/* Three Editorial Pillars */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
           {[
             {
               icon: <Gem className="w-5 h-5" />,
@@ -72,9 +72,9 @@ export const AboutPage: React.FC = () => {
           ].map((item) => (
             <div
               key={item.title}
-              className="glass-panel rounded-[26px] p-6 sm:p-7 space-y-4"
+              className="glass-panel rounded-[22px] sm:rounded-[26px] p-5 sm:p-7 space-y-3.5 sm:space-y-4"
             >
-              <SquircleIcon variant="pink" className="w-12 h-12">
+              <SquircleIcon variant="pink" className="w-11 h-11 sm:w-12 sm:h-12">
                 {item.icon}
               </SquircleIcon>
               <h2 className="font-serif text-2xl font-semibold text-[#230B14]">
