@@ -1,0 +1,290 @@
+{
+  "entities": {
+    "Product": {
+      "title": "Product",
+      "description": "Luxury artificial jewellery or fashion accessory item in the BILAL SHEIKH catalog.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "name": { "type": "string", "minLength": 1, "maxLength": 140 },
+        "slug": { "type": "string", "minLength": 1, "maxLength": 140 },
+        "category": {
+          "type": "string",
+          "enum": [
+            "Artificial Jewellery",
+            "Necklaces",
+            "Earrings",
+            "Bangles",
+            "Bracelets",
+            "Rings",
+            "Jewellery Sets",
+            "Fashion Accessories",
+            "Hair Accessories",
+            "Custom Items"
+          ]
+        },
+        "price": { "type": "number" },
+        "originalPrice": { "type": "number" },
+        "description": { "type": "string", "minLength": 1, "maxLength": 2000 },
+        "materials": { "type": "string", "minLength": 1, "maxLength": 300 },
+        "colors": { "type": "array" },
+        "images": { "type": "array" },
+        "availability": {
+          "type": "string",
+          "enum": ["In Stock", "Limited Edition", "Made to Order", "Out of Stock"]
+        },
+        "stockCount": { "type": "number" },
+        "isAvailable": { "type": "boolean" },
+        "isSample": { "type": "boolean" },
+        "featured": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": [
+        "id",
+        "name",
+        "slug",
+        "category",
+        "price",
+        "originalPrice",
+        "description",
+        "materials",
+        "colors",
+        "images",
+        "availability",
+        "stockCount",
+        "isAvailable",
+        "isSample",
+        "featured",
+        "createdAt",
+        "updatedAt"
+      ]
+    },
+    "StoreSettings": {
+      "title": "StoreSettings",
+      "description": "Configurable store settings including WhatsApp business number, delivery charges, promo codes, social links, and store policies.",
+      "type": "object",
+      "properties": {
+        "brandName": { "type": "string", "minLength": 1, "maxLength": 80 },
+        "tagline": { "type": "string", "minLength": 1, "maxLength": 160 },
+        "whatsappNumber": { "type": "string", "minLength": 5, "maxLength": 25 },
+        "instagramUrl": { "type": "string", "maxLength": 250 },
+        "instagramHandle": { "type": "string", "maxLength": 80 },
+        "contactEmail": { "type": "string", "maxLength": 120 },
+        "contactPhone": { "type": "string", "maxLength": 40 },
+        "studioAddress": { "type": "string", "maxLength": 300 },
+        "deliveryCharge": { "type": "number" },
+        "freeDeliveryThreshold": { "type": "number" },
+        "promoCode": { "type": "string", "maxLength": 40 },
+        "promoDiscountPercent": { "type": "number" },
+        "paymentMethods": { "type": "array" },
+        "aboutStory": { "type": "string", "maxLength": 3000 },
+        "privacyPolicy": { "type": "string", "maxLength": 3000 },
+        "termsPolicy": { "type": "string", "maxLength": 3000 },
+        "returnPolicy": { "type": "string", "maxLength": 3000 },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": [
+        "brandName",
+        "tagline",
+        "whatsappNumber",
+        "instagramUrl",
+        "instagramHandle",
+        "contactEmail",
+        "contactPhone",
+        "studioAddress",
+        "deliveryCharge",
+        "freeDeliveryThreshold",
+        "promoCode",
+        "promoDiscountPercent",
+        "paymentMethods",
+        "aboutStory",
+        "privacyPolicy",
+        "termsPolicy",
+        "returnPolicy",
+        "updatedAt"
+      ]
+    },
+    "Order": {
+      "title": "Order",
+      "description": "Customer checkout order with itemized products, totals, delivery info, and WhatsApp confirmation status.",
+      "type": "object",
+      "properties": {
+        "orderCode": { "type": "string", "minLength": 3, "maxLength": 32 },
+        "customerUid": { "type": "string", "minLength": 1, "maxLength": 128 },
+        "customerName": { "type": "string", "minLength": 1, "maxLength": 120 },
+        "whatsappNumber": { "type": "string", "minLength": 5, "maxLength": 30 },
+        "email": { "type": "string", "maxLength": 120 },
+        "deliveryAddress": { "type": "string", "minLength": 3, "maxLength": 400 },
+        "city": { "type": "string", "minLength": 1, "maxLength": 80 },
+        "postalCode": { "type": "string", "maxLength": 20 },
+        "orderNotes": { "type": "string", "maxLength": 500 },
+        "paymentMethod": { "type": "string", "minLength": 1, "maxLength": 80 },
+        "items": { "type": "array" },
+        "subtotal": { "type": "number" },
+        "discountAmount": { "type": "number" },
+        "discountCode": { "type": "string", "maxLength": 40 },
+        "deliveryCharge": { "type": "number" },
+        "totalAmount": { "type": "number" },
+        "status": {
+          "type": "string",
+          "enum": [
+            "Awaiting WhatsApp Confirmation",
+            "Confirmed",
+            "Processing",
+            "Shipped",
+            "Delivered",
+            "Cancelled"
+          ]
+        },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": [
+        "orderCode",
+        "customerUid",
+        "customerName",
+        "whatsappNumber",
+        "email",
+        "deliveryAddress",
+        "city",
+        "postalCode",
+        "orderNotes",
+        "paymentMethod",
+        "items",
+        "subtotal",
+        "discountAmount",
+        "discountCode",
+        "deliveryCharge",
+        "totalAmount",
+        "status",
+        "createdAt",
+        "updatedAt"
+      ]
+    },
+    "CustomRequest": {
+      "title": "CustomRequest",
+      "description": "Bespoke custom jewellery or accessory design request submitted by a customer.",
+      "type": "object",
+      "properties": {
+        "requestCode": { "type": "string", "minLength": 3, "maxLength": 32 },
+        "customerUid": { "type": "string", "minLength": 1, "maxLength": 128 },
+        "customerName": { "type": "string", "minLength": 1, "maxLength": 120 },
+        "whatsappNumber": { "type": "string", "minLength": 5, "maxLength": 30 },
+        "itemName": { "type": "string", "minLength": 1, "maxLength": 140 },
+        "jewelleryType": { "type": "string", "minLength": 1, "maxLength": 80 },
+        "preferredColor": { "type": "string", "minLength": 1, "maxLength": 80 },
+        "preferredMaterial": { "type": "string", "minLength": 1, "maxLength": 100 },
+        "description": { "type": "string", "minLength": 5, "maxLength": 1500 },
+        "referenceImageUrl": { "type": "string", "maxLength": 250000 },
+        "budgetRange": { "type": "string", "minLength": 1, "maxLength": 80 },
+        "status": {
+          "type": "string",
+          "enum": ["Pending Review", "Quoted", "In Design", "Completed", "Archived"]
+        },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": [
+        "requestCode",
+        "customerUid",
+        "customerName",
+        "whatsappNumber",
+        "itemName",
+        "jewelleryType",
+        "preferredColor",
+        "preferredMaterial",
+        "description",
+        "referenceImageUrl",
+        "budgetRange",
+        "status",
+        "createdAt",
+        "updatedAt"
+      ]
+    },
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "Private authenticated customer profile record.",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "displayName": { "type": "string", "maxLength": 120 },
+        "email": { "type": "string", "maxLength": 160 },
+        "photoURL": { "type": "string", "maxLength": 500 },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "displayName", "email", "photoURL", "updatedAt"]
+    },
+    "WishlistItem": {
+      "title": "WishlistItem",
+      "description": "Saved wishlist product reference belonging to an authenticated customer.",
+      "type": "object",
+      "properties": {
+        "productId": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "addedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["productId", "addedAt"]
+    },
+    "GalleryItem": {
+      "title": "GalleryItem",
+      "description": "Curated luxury jewellery editorial gallery item.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "title": { "type": "string", "minLength": 1, "maxLength": 140 },
+        "caption": { "type": "string", "maxLength": 400 },
+        "category": { "type": "string", "minLength": 1, "maxLength": 60 },
+        "imageUrl": { "type": "string", "minLength": 1, "maxLength": 250000 },
+        "isCustomerPhoto": { "type": "boolean" },
+        "featured": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "title", "caption", "category", "imageUrl", "isCustomerPhoto", "featured", "createdAt"]
+    },
+    "AdminRecord": {
+      "title": "AdminRecord",
+      "description": "Authorized admin UID registry.",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "email": { "type": "string", "maxLength": 160 },
+        "addedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "email", "addedAt"]
+    }
+  },
+  "firestore": {
+    "/products/{productId}": {
+      "schema": { "$ref": "#/entities/Product" },
+      "description": "Public storefront catalog of luxury artificial jewellery and accessories."
+    },
+    "/storeSettings/{settingId}": {
+      "schema": { "$ref": "#/entities/StoreSettings" },
+      "description": "Storefront configuration, WhatsApp number, delivery fees, policies, and promo code."
+    },
+    "/orders/{orderId}": {
+      "schema": { "$ref": "#/entities/Order" },
+      "description": "Customer orders with PII restricted to order owner and store admin."
+    },
+    "/customRequests/{requestId}": {
+      "schema": { "$ref": "#/entities/CustomRequest" },
+      "description": "Custom jewellery and accessory design requests restricted to request owner and store admin."
+    },
+    "/users/{userId}": {
+      "schema": { "$ref": "#/entities/UserProfile" },
+      "description": "Customer profile documents strictly isolated to owner and admin."
+    },
+    "/users/{userId}/wishlist/{productId}": {
+      "schema": { "$ref": "#/entities/WishlistItem" },
+      "description": "Per-user persistent wishlist items."
+    },
+    "/galleryItems/{itemId}": {
+      "schema": { "$ref": "#/entities/GalleryItem" },
+      "description": "Public luxury gallery showcase items."
+    },
+    "/admins/{userId}": {
+      "schema": { "$ref": "#/entities/AdminRecord" },
+      "description": "Admin role directory."
+    }
+  }
+}

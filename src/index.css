@@ -1,0 +1,143 @@
+@import "tailwindcss";
+
+@theme {
+  --font-serif: "Cormorant Garamond", Georgia, serif;
+  --font-sans: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
+
+  --color-luxury-pink: #F7A8C4;
+  --color-baby-pink: #FFE0EB;
+  --color-deep-red: #B5123B;
+  --color-cherry-red: #E32652;
+  --color-soft-rose: #FFF5F8;
+  --color-berry-ink: #230B14;
+  --color-rose-muted: #6E3F50;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    font-family: var(--font-sans);
+    color: #230B14;
+    background-color: #FFF5F8;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+    overflow-x: hidden;
+    background:
+      radial-gradient(circle at 12% 10%, rgba(247, 168, 196, 0.42) 0%, transparent 46%),
+      radial-gradient(circle at 88% 18%, rgba(255, 224, 235, 0.9) 0%, transparent 44%),
+      radial-gradient(circle at 50% 62%, rgba(227, 38, 82, 0.08) 0%, transparent 52%),
+      radial-gradient(circle at 85% 88%, rgba(247, 168, 196, 0.34) 0%, transparent 45%),
+      #FFF5F8;
+    background-attachment: fixed;
+  }
+
+  h1, h2, h3, h4, .font-editorial {
+    font-family: var(--font-serif);
+    text-wrap: balance;
+  }
+}
+
+/* Extreme Glassmorphism & Squircle Surface System */
+.glass-panel {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.62) 0%, rgba(255, 224, 235, 0.36) 100%);
+  backdrop-filter: blur(22px) saturate(165%);
+  -webkit-backdrop-filter: blur(22px) saturate(165%);
+  border: 1px solid rgba(255, 255, 255, 0.78);
+  box-shadow:
+    inset 0 1px 1px rgba(255, 255, 255, 0.9),
+    0 18px 46px -14px rgba(181, 18, 59, 0.14);
+}
+
+.glass-panel-strong {
+  background: linear-gradient(140deg, rgba(255, 255, 255, 0.8) 0%, rgba(255, 224, 235, 0.54) 100%);
+  backdrop-filter: blur(28px) saturate(180%);
+  -webkit-backdrop-filter: blur(28px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.88);
+  box-shadow:
+    inset 0 1.5px 1px rgba(255, 255, 255, 0.95),
+    0 24px 60px -16px rgba(181, 18, 59, 0.18);
+}
+
+.glass-pink {
+  background: linear-gradient(145deg, rgba(255, 224, 235, 0.56) 0%, rgba(247, 168, 196, 0.28) 100%);
+  backdrop-filter: blur(20px) saturate(160%);
+  -webkit-backdrop-filter: blur(20px) saturate(160%);
+  border: 1px solid rgba(255, 255, 255, 0.72);
+  box-shadow:
+    inset 0 1px 1px rgba(255, 255, 255, 0.82),
+    0 14px 36px -12px rgba(181, 18, 59, 0.14);
+}
+
+.glass-squircle-icon {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.75) 0%, rgba(255, 224, 235, 0.45) 100%);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.85);
+  border-radius: 14px;
+  box-shadow:
+    inset 0 1px 1px rgba(255, 255, 255, 0.92),
+    0 8px 20px -6px rgba(181, 18, 59, 0.14);
+}
+
+.glass-crimson-btn {
+  background: linear-gradient(135deg, #B5123B 0%, #E32652 100%);
+  border: 1px solid rgba(255, 255, 255, 0.38);
+  box-shadow:
+    inset 0 1px 1px rgba(255, 255, 255, 0.42),
+    0 14px 30px -8px rgba(181, 18, 59, 0.42);
+}
+
+.glass-crimson-btn:hover {
+  background: linear-gradient(135deg, #9C0E31 0%, #D01D47 100%);
+  box-shadow:
+    inset 0 1px 1px rgba(255, 255, 255, 0.5),
+    0 18px 36px -8px rgba(181, 18, 59, 0.52);
+}
+
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Shimmer specular reflection sweep */
+@keyframes shimmerSweep {
+  0% { transform: translateX(-130%) skewX(-18deg); }
+  100% { transform: translateX(230%) skewX(-18deg); }
+}
+
+.glass-shimmer {
+  position: relative;
+  overflow: hidden;
+}
+
+.glass-shimmer::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  width: 45%;
+  background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.45) 50%, transparent 100%);
+  transform: translateX(-130%) skewX(-18deg);
+  pointer-events: none;
+}
+
+.glass-shimmer:hover::after {
+  animation: shimmerSweep 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .glass-shimmer:hover::after { animation: none; }
+}
+
+@media print {
+  body {
+    background: #FFFFFF !important;
+  }
+  .no-print {
+    display: none !important;
+  }
+}

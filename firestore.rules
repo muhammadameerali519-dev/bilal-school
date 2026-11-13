@@ -1,0 +1,391 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Global Default-Deny Safety Net
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // --- Reusable Hardened Helpers ---
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isVerifiedUser() {
+      return isSignedIn() && request.auth.token.email_verified == true;
+    }
+
+    function isOwner(userId) {
+      return isVerifiedUser() && request.auth.uid == userId;
+    }
+
+    function isBootstrappedAdmin() {
+      return isVerifiedUser() && request.auth.token.email == '80880q0q0@gmail.com';
+    }
+
+    function isAdmin() {
+      return isBootstrappedAdmin() || (
+        isVerifiedUser() &&
+        exists(/databases/$(database)/documents/admins/$(request.auth.uid))
+      );
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() >= 1 && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function isValidString(val, minLen, maxLen) {
+      return val is string && val.size() >= minLen && val.size() <= maxLen;
+    }
+
+    // Connection health check endpoint
+    match /test/connection {
+      allow get: if true;
+    }
+
+    // --- Validation Blueprints ---
+
+    function isValidProduct(data) {
+      return data.keys().hasAll([
+        'id', 'name', 'slug', 'category', 'price', 'originalPrice',
+        'description', 'materials', 'colors', 'images', 'availability',
+        'stockCount', 'isAvailable', 'isSample', 'featured', 'createdAt', 'updatedAt'
+      ]) &&
+      data.keys().hasOnly([
+        'id', 'name', 'slug', 'category', 'price', 'originalPrice',
+        'description', 'materials', 'colors', 'images', 'availability',
+        'stockCount', 'isAvailable', 'isSample', 'featured', 'createdAt', 'updatedAt'
+      ]) &&
+      isValidId(data.id) &&
+      isValidString(data.name, 1, 140) &&
+      isValidString(data.slug, 1, 140) &&
+      data.category in [
+        'Artificial Jewellery', 'Necklaces', 'Earrings', 'Bangles',
+        'Bracelets', 'Rings', 'Jewellery Sets', 'Fashion Accessories',
+        'Hair Accessories', 'Custom Items'
+      ] &&
+      data.price is number && data.price > 0 && data.price <= 10000000 &&
+      data.originalPrice is number && data.originalPrice >= 0 && data.originalPrice <= 10000000 &&
+      isValidString(data.description, 1, 2000) &&
+      isValidString(data.materials, 1, 300) &&
+      data.colors is list && data.colors.size() >= 1 && data.colors.size() <= 10 &&
+      isValidString(data.colors[0], 1, 50) &&
+      data.images is list && data.images.size() >= 1 && data.images.size() <= 6 &&
+      isValidString(data.images[0], 1, 250000) &&
+      data.availability in ['In Stock', 'Limited Edition', 'Made to Order', 'Out of Stock'] &&
+      data.stockCount is number && data.stockCount >= 0 && data.stockCount <= 100000 &&
+      data.isAvailable is bool &&
+      data.isSample is bool &&
+      data.featured is bool &&
+      data.createdAt is timestamp &&
+      data.updatedAt is timestamp;
+    }
+
+    function isValidStoreSettings(data) {
+      return data.keys().hasAll([
+        'brandName', 'tagline', 'whatsappNumber', 'instagramUrl', 'instagramHandle',
+        'contactEmail', 'contactPhone', 'studioAddress', 'deliveryCharge',
+        'freeDeliveryThreshold', 'promoCode', 'promoDiscountPercent', 'paymentMethods',
+        'aboutStory', 'privacyPolicy', 'termsPolicy', 'returnPolicy', 'updatedAt'
+      ]) &&
+      data.keys().hasOnly([
+        'brandName', 'tagline', 'whatsappNumber', 'instagramUrl', 'instagramHandle',
+        'contactEmail', 'contactPhone', 'studioAddress', 'deliveryCharge',
+        'freeDeliveryThreshold', 'promoCode', 'promoDiscountPercent', 'paymentMethods',
+        'aboutStory', 'privacyPolicy', 'termsPolicy', 'returnPolicy', 'updatedAt'
+      ]) &&
+      isValidString(data.brandName, 1, 80) &&
+      isValidString(data.tagline, 1, 160) &&
+      isValidString(data.whatsappNumber, 5, 25) &&
+      isValidString(data.instagramUrl, 0, 250) &&
+      isValidString(data.instagramHandle, 0, 80) &&
+      isValidString(data.contactEmail, 0, 120) &&
+      isValidString(data.contactPhone, 0, 40) &&
+      isValidString(data.studioAddress, 0, 300) &&
+      data.deliveryCharge is number && data.deliveryCharge >= 0 && data.deliveryCharge <= 50000 &&
+      data.freeDeliveryThreshold is number && data.freeDeliveryThreshold >= 0 && data.freeDeliveryThreshold <= 1000000 &&
+      isValidString(data.promoCode, 0, 40) &&
+      data.promoDiscountPercent is number && data.promoDiscountPercent >= 0 && data.promoDiscountPercent <= 90 &&
+      data.paymentMethods is list && data.paymentMethods.size() >= 1 && data.paymentMethods.size() <= 10 &&
+      isValidString(data.paymentMethods[0], 1, 80) &&
+      isValidString(data.aboutStory, 0, 3000) &&
+      isValidString(data.privacyPolicy, 0, 3000) &&
+      isValidString(data.termsPolicy, 0, 3000) &&
+      isValidString(data.returnPolicy, 0, 3000) &&
+      data.updatedAt is timestamp;
+    }
+
+    function isValidOrderItem(item) {
+      return item is map &&
+      item.keys().hasAll(['productId', 'name', 'price', 'quantity', 'selectedColor', 'imageUrl']) &&
+      item.keys().hasOnly(['productId', 'name', 'price', 'quantity', 'selectedColor', 'imageUrl']) &&
+      isValidId(item.productId) &&
+      isValidString(item.name, 1, 140) &&
+      item.price is number && item.price > 0 && item.price <= 10000000 &&
+      item.quantity is int && item.quantity >= 1 && item.quantity <= 100 &&
+      isValidString(item.selectedColor, 0, 60) &&
+      isValidString(item.imageUrl, 0, 250000);
+    }
+
+    function isValidOrder(data) {
+      return data.keys().hasAll([
+        'orderCode', 'customerUid', 'customerName', 'whatsappNumber', 'email',
+        'deliveryAddress', 'city', 'postalCode', 'orderNotes', 'paymentMethod',
+        'items', 'subtotal', 'discountAmount', 'discountCode', 'deliveryCharge',
+        'totalAmount', 'status', 'createdAt', 'updatedAt'
+      ]) &&
+      data.keys().hasOnly([
+        'orderCode', 'customerUid', 'customerName', 'whatsappNumber', 'email',
+        'deliveryAddress', 'city', 'postalCode', 'orderNotes', 'paymentMethod',
+        'items', 'subtotal', 'discountAmount', 'discountCode', 'deliveryCharge',
+        'totalAmount', 'status', 'createdAt', 'updatedAt'
+      ]) &&
+      isValidString(data.orderCode, 3, 32) &&
+      isValidString(data.customerUid, 1, 128) &&
+      isValidString(data.customerName, 1, 120) &&
+      isValidString(data.whatsappNumber, 5, 30) &&
+      isValidString(data.email, 0, 120) &&
+      isValidString(data.deliveryAddress, 3, 400) &&
+      isValidString(data.city, 1, 80) &&
+      isValidString(data.postalCode, 0, 20) &&
+      isValidString(data.orderNotes, 0, 500) &&
+      isValidString(data.paymentMethod, 1, 80) &&
+      data.items is list && data.items.size() >= 1 && data.items.size() <= 30 &&
+      isValidOrderItem(data.items[0]) &&
+      data.subtotal is number && data.subtotal > 0 && data.subtotal <= 50000000 &&
+      data.discountAmount is number && data.discountAmount >= 0 && data.discountAmount <= 50000000 &&
+      isValidString(data.discountCode, 0, 40) &&
+      data.deliveryCharge is number && data.deliveryCharge >= 0 && data.deliveryCharge <= 50000 &&
+      data.totalAmount is number && data.totalAmount >= 0 && data.totalAmount <= 50000000 &&
+      data.status in [
+        'Awaiting WhatsApp Confirmation', 'Confirmed', 'Processing',
+        'Shipped', 'Delivered', 'Cancelled'
+      ] &&
+      data.createdAt is timestamp &&
+      data.updatedAt is timestamp;
+    }
+
+    function isValidCustomRequest(data) {
+      return data.keys().hasAll([
+        'requestCode', 'customerUid', 'customerName', 'whatsappNumber',
+        'itemName', 'jewelleryType', 'preferredColor', 'preferredMaterial',
+        'description', 'referenceImageUrl', 'budgetRange', 'status',
+        'createdAt', 'updatedAt'
+      ]) &&
+      data.keys().hasOnly([
+        'requestCode', 'customerUid', 'customerName', 'whatsappNumber',
+        'itemName', 'jewelleryType', 'preferredColor', 'preferredMaterial',
+        'description', 'referenceImageUrl', 'budgetRange', 'status',
+        'createdAt', 'updatedAt'
+      ]) &&
+      isValidString(data.requestCode, 3, 32) &&
+      isValidString(data.customerUid, 1, 128) &&
+      isValidString(data.customerName, 1, 120) &&
+      isValidString(data.whatsappNumber, 5, 30) &&
+      isValidString(data.itemName, 1, 140) &&
+      isValidString(data.jewelleryType, 1, 80) &&
+      isValidString(data.preferredColor, 1, 80) &&
+      isValidString(data.preferredMaterial, 1, 100) &&
+      isValidString(data.description, 5, 1500) &&
+      isValidString(data.referenceImageUrl, 0, 250000) &&
+      isValidString(data.budgetRange, 1, 80) &&
+      data.status in ['Pending Review', 'Quoted', 'In Design', 'Completed', 'Archived'] &&
+      data.createdAt is timestamp &&
+      data.updatedAt is timestamp;
+    }
+
+    function isValidUserProfile(data, userId) {
+      return data.keys().hasAll(['uid', 'displayName', 'email', 'photoURL', 'updatedAt']) &&
+      data.keys().hasOnly(['uid', 'displayName', 'email', 'photoURL', 'updatedAt']) &&
+      data.uid == userId &&
+      isValidString(data.displayName, 0, 120) &&
+      isValidString(data.email, 0, 160) &&
+      isValidString(data.photoURL, 0, 500) &&
+      data.updatedAt is timestamp;
+    }
+
+    function isValidWishlistItem(data, productId) {
+      return data.keys().hasAll(['productId', 'addedAt']) &&
+      data.keys().hasOnly(['productId', 'addedAt']) &&
+      data.productId == productId &&
+      isValidId(data.productId) &&
+      data.addedAt is timestamp;
+    }
+
+    function isValidGalleryItem(data) {
+      return data.keys().hasAll([
+        'id', 'title', 'caption', 'category', 'imageUrl',
+        'isCustomerPhoto', 'featured', 'createdAt'
+      ]) &&
+      data.keys().hasOnly([
+        'id', 'title', 'caption', 'category', 'imageUrl',
+        'isCustomerPhoto', 'featured', 'createdAt'
+      ]) &&
+      isValidId(data.id) &&
+      isValidString(data.title, 1, 140) &&
+      isValidString(data.caption, 0, 400) &&
+      isValidString(data.category, 1, 60) &&
+      isValidString(data.imageUrl, 1, 250000) &&
+      data.isCustomerPhoto is bool &&
+      data.featured is bool &&
+      data.createdAt is timestamp;
+    }
+
+    // --- Collection Rules ---
+
+    match /products/{productId} {
+      allow get: if isValidId(productId);
+      allow list: if true;
+      allow create: if isAdmin() &&
+        isValidId(productId) &&
+        isValidProduct(incoming()) &&
+        incoming().id == productId &&
+        incoming().createdAt == request.time &&
+        incoming().updatedAt == request.time;
+      allow update: if isAdmin() &&
+        isValidId(productId) &&
+        isValidProduct(incoming()) &&
+        incoming().id == existing().id &&
+        incoming().createdAt == existing().createdAt &&
+        incoming().updatedAt == request.time &&
+        incoming().diff(existing()).affectedKeys().hasOnly([
+          'name', 'slug', 'category', 'price', 'originalPrice', 'description',
+          'materials', 'colors', 'images', 'availability', 'stockCount',
+          'isAvailable', 'isSample', 'featured', 'updatedAt'
+        ]);
+      allow delete: if isAdmin() && isValidId(productId);
+    }
+
+    match /storeSettings/{settingId} {
+      allow get: if settingId == 'main';
+      allow create: if isAdmin() &&
+        settingId == 'main' &&
+        isValidStoreSettings(incoming()) &&
+        incoming().updatedAt == request.time;
+      allow update: if isAdmin() &&
+        settingId == 'main' &&
+        isValidStoreSettings(incoming()) &&
+        incoming().updatedAt == request.time &&
+        incoming().diff(existing()).affectedKeys().hasOnly([
+          'brandName', 'tagline', 'whatsappNumber', 'instagramUrl', 'instagramHandle',
+          'contactEmail', 'contactPhone', 'studioAddress', 'deliveryCharge',
+          'freeDeliveryThreshold', 'promoCode', 'promoDiscountPercent', 'paymentMethods',
+          'aboutStory', 'privacyPolicy', 'termsPolicy', 'returnPolicy', 'updatedAt'
+        ]);
+    }
+
+    match /orders/{orderId} {
+      allow get: if isValidId(orderId) && (
+        isAdmin() || (isVerifiedUser() && existing().customerUid == request.auth.uid)
+      );
+      allow list: if isBootstrappedAdmin() || (
+        isVerifiedUser() && resource.data.customerUid == request.auth.uid
+      );
+      allow create: if isValidId(orderId) &&
+        isValidOrder(incoming()) &&
+        incoming().status == 'Awaiting WhatsApp Confirmation' &&
+        incoming().createdAt == request.time &&
+        incoming().updatedAt == request.time &&
+        (
+          (isVerifiedUser() && incoming().customerUid == request.auth.uid) ||
+          (!isSignedIn() && incoming().customerUid == 'guest')
+        );
+      allow update: if isAdmin() &&
+        isValidId(orderId) &&
+        isValidOrder(incoming()) &&
+        incoming().orderCode == existing().orderCode &&
+        incoming().customerUid == existing().customerUid &&
+        incoming().createdAt == existing().createdAt &&
+        incoming().updatedAt == request.time &&
+        incoming().diff(existing()).affectedKeys().hasOnly(['status', 'updatedAt']);
+      allow delete: if isAdmin() && isValidId(orderId);
+    }
+
+    match /customRequests/{requestId} {
+      allow get: if isValidId(requestId) && (
+        isAdmin() || (isVerifiedUser() && existing().customerUid == request.auth.uid)
+      );
+      allow list: if isBootstrappedAdmin() || (
+        isVerifiedUser() && resource.data.customerUid == request.auth.uid
+      );
+      allow create: if isValidId(requestId) &&
+        isValidCustomRequest(incoming()) &&
+        incoming().status == 'Pending Review' &&
+        incoming().createdAt == request.time &&
+        incoming().updatedAt == request.time &&
+        (
+          (isVerifiedUser() && incoming().customerUid == request.auth.uid) ||
+          (!isSignedIn() && incoming().customerUid == 'guest')
+        );
+      allow update: if isAdmin() &&
+        isValidId(requestId) &&
+        isValidCustomRequest(incoming()) &&
+        incoming().requestCode == existing().requestCode &&
+        incoming().customerUid == existing().customerUid &&
+        incoming().createdAt == existing().createdAt &&
+        incoming().updatedAt == request.time &&
+        incoming().diff(existing()).affectedKeys().hasOnly(['status', 'updatedAt']);
+      allow delete: if isAdmin() && isValidId(requestId);
+    }
+
+    match /users/{userId} {
+      allow get: if isValidId(userId) && (isOwner(userId) || isAdmin());
+      allow create: if isOwner(userId) &&
+        isValidId(userId) &&
+        isValidUserProfile(incoming(), userId) &&
+        incoming().updatedAt == request.time;
+      allow update: if isOwner(userId) &&
+        isValidId(userId) &&
+        isValidUserProfile(incoming(), userId) &&
+        incoming().uid == existing().uid &&
+        incoming().updatedAt == request.time &&
+        incoming().diff(existing()).affectedKeys().hasOnly([
+          'displayName', 'email', 'photoURL', 'updatedAt'
+        ]);
+
+      match /wishlist/{productId} {
+        allow get: if isValidId(userId) && isValidId(productId) && isOwner(userId);
+        allow list: if isValidId(userId) && isOwner(userId);
+        allow create: if isOwner(userId) &&
+          isValidId(userId) &&
+          isValidId(productId) &&
+          isValidWishlistItem(incoming(), productId) &&
+          incoming().addedAt == request.time;
+        allow delete: if isOwner(userId) && isValidId(userId) && isValidId(productId);
+      }
+    }
+
+    match /galleryItems/{itemId} {
+      allow get: if isValidId(itemId);
+      allow list: if true;
+      allow create: if isAdmin() &&
+        isValidId(itemId) &&
+        isValidGalleryItem(incoming()) &&
+        incoming().id == itemId &&
+        incoming().createdAt == request.time;
+      allow update: if isAdmin() &&
+        isValidId(itemId) &&
+        isValidGalleryItem(incoming()) &&
+        incoming().id == existing().id &&
+        incoming().createdAt == existing().createdAt &&
+        incoming().diff(existing()).affectedKeys().hasOnly([
+          'title', 'caption', 'category', 'imageUrl', 'isCustomerPhoto', 'featured'
+        ]);
+      allow delete: if isAdmin() && isValidId(itemId);
+    }
+
+    match /admins/{userId} {
+      allow get: if isValidId(userId) && (isOwner(userId) || isAdmin());
+      allow list, create, update, delete: if isAdmin();
+    }
+  }
+}
